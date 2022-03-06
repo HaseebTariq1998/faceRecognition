@@ -31,7 +31,7 @@ def abc(img):
 
     # Load image
     print(filename)
-    small_frame = cv2.resize(img, (0, 0), fx=0.9, fy=0.9)
+    small_frame = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
