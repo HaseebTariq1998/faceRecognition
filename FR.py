@@ -49,30 +49,30 @@ def abc(img):
     # First we need to convert it from RGB to BGR as we are going to work with cv2
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-    # for face_encoding, face_location in zip(encodings, locations):
-    #     results = face_recognition.compare_faces(known_faces, face_encoding, TOLERANCE)
-    #     match = None
-    #     if True in results:  # If at least one is true, get a name of first of found labels
-    #         match = known_names[results.index(True)]
-    #         print(f"Match found : { match}")
-    #         top_left = (face_location[3], face_location[0])
-    #         bottom_right = (face_location[1], face_location[2])
-    #
-    #         # Get color by name using our fancy function
-    #         color = [0,255,0]
-    #
-    #         # Paint frame
-    #         cv2.rectangle(image, top_left, bottom_right, color, FRAME_THICKNESS)
-    #
-    #         top_left = (face_location[3], face_location[2])
-    #         bottom_right = (face_location[1], face_location[2] + 22)
-    #
-    #         # Paint frame
-    #         cv2.rectangle(image, top_left, bottom_right, color, cv2.FILLED)
-    #
-    #         # Wite a name
-    #         cv2.putText(image, match, (face_location[3] + 10, face_location[2] + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-    #                     (0, 0, 0), FONT_THICKNESS)
+    for face_encoding, face_location in zip(encodings, locations):
+        results = face_recognition.compare_faces(known_faces, face_encoding, TOLERANCE)
+        match = None
+        if True in results:  # If at least one is true, get a name of first of found labels
+            match = known_names[results.index(True)]
+            print(f"Match found : { match}")
+            top_left = (face_location[3], face_location[0])
+            bottom_right = (face_location[1], face_location[2])
+
+            # Get color by name using our fancy function
+            color = [0,255,0]
+
+            # Paint frame
+            cv2.rectangle(image, top_left, bottom_right, color, FRAME_THICKNESS)
+
+            top_left = (face_location[3], face_location[2])
+            bottom_right = (face_location[1], face_location[2] + 22)
+
+            # Paint frame
+            cv2.rectangle(image, top_left, bottom_right, color, cv2.FILLED)
+
+            # Wite a name
+            cv2.putText(image, match, (face_location[3] + 10, face_location[2] + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (0, 0, 0), FONT_THICKNESS)
 
     cv2.imshow(filename, image)
 
@@ -83,12 +83,16 @@ def abc(img):
 
 vid = cv2.VideoCapture(0)
 
+i=0
 while (True):
 
     # Capture the video frame
     # by frameq
     ret, frame = vid.read()
-    abc(frame)
+    if((i%10)==0):
+        print(i)
+        abc(frame)
+    i=i+1
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
