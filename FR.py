@@ -2,6 +2,7 @@
 import face_recognition
 import os
 import cv2
+import pickle
 
 
 KNOWN_FACES_DIR = 'known_faces'
@@ -9,7 +10,7 @@ UNKNOWN_FACES_DIR = 'unknown_faces'
 TOLERANCE = 0.4
 FRAME_THICKNESS = 3
 FONT_THICKNESS = 2
-MODEL = 'cnn'  # default: 'hog', other one can be 'cnn' - CUDA accelerated (if available) deep-learning pretrained model
+MODEL = 'hog'  # default: 'hog', other one can be 'cnn' - CUDA accelerated (if available) deep-learning pretrained model
 
 print("loading know faces ")
 
@@ -25,13 +26,18 @@ for name in os.listdir(KNOWN_FACES_DIR):
         known_faces.append(encoding)
         known_names.append(name)
 
+print("[INFO] serializing encodings...")
+data = {"encodings": known_faces, "names": known_names}
+f = open("encodings.pickle", "wb")
+f.write(pickle.dumps(data))
+f.close()
 print("loading unknow ")
 
 def abc(img):
 
     # Load image
     print(filename)
-    small_frame = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+    small_frame = cv2.resize(img, (0, 0), fx=0.9, fy=0.9)
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
@@ -81,23 +87,19 @@ def abc(img):
 
 
 
-vid = cv2.VideoCapture(0)
-
-i=0
-while (True):
-
-    # Capture the video frame
-    # by frameq
-    ret, frame = vid.read()
-    if((i%10)==0):
-        print(i)
-        abc(frame)
-    i=i+1
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-vid.release()
-# Destroy all the windows
-cv2.destroyAllWindows()
+# vid = cv2.VideoCapture(0)
+#
+# while (True):
+#
+#     # Capture the video frame
+#     # by frameq
+#     ret, frame = vid.read()
+#     abc(frame)
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
+#
+# vid.release()
+# # Destroy all the windows
+# cv2.destroyAllWindows()
 
 
