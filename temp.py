@@ -19,8 +19,9 @@ def motionDetection():
 
         for contour in contours:
             (x, y, w, h) = cv.boundingRect(contour)
-            if cv.contourArea(contour) < 900:
+            if cv.contourArea(contour) < 2000:
                 continue
+            print("motion detected !!!!!")
             cv.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv.putText(frame1, "Status: {}".format('Movement'), (10, 20), cv.FONT_HERSHEY_SIMPLEX,
                        1, (255, 0, 0), 3)
